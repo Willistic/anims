@@ -1,3 +1,5 @@
+import { c } from "./canvasContext.js";
+
 export function loadSprite(src) {
     return new Promise((resolve, reject) => {
         const img = new Image();
@@ -21,6 +23,16 @@ export function generateFramesPositionInSprite(numberOfColumns, numberOfRows, fr
         currentframeY += frameSize;
     }
     return framesPosition;
+}
+
+export function drawFrame(
+	sprite,
+	framePosition,
+	frameSize,
+	canvasPosition,
+	scale = 1
+) {
+    c.drawImage(sprite, framePosition.x, framePosition.y, frameSize, frameSize, canvasPosition.x, canvasPosition.y, frameSize * scale, frameSize * scale);
 }
 
 export function makeAnimatedSprite(sprite, anims, framesPosition, frameSize, pos, scale = 1) {
@@ -59,12 +71,12 @@ export function makeAnimatedSprite(sprite, anims, framesPosition, frameSize, pos
                 data.currentFrame = data.currentAnim.frames[data.currentAnimFrameIndex];
             }
 
-            if (data.currentAnimFrameIindex >= data.currectAnim.frames.length - 1 && data.currentAnim.loop) {
+            if (data.currentAnimFrameIndex >= data.currentAnim.frames.length - 1 && data.currentAnim.loop) {
                 data.currentAnimFrameIndex = 0;
-                // data.currentFrame = data.currentAnim.frames[data.currentAnimFrameIndex];
+                data.currentFrame = data.currentAnim.frames[data.currentAnimFrameIndex];
             }
 
-            data.currentFrame = data.currentAnim.frames[data.currentAnimFrameIndex];
+            // data.currentFrame = data.currentAnim.frames[data.currentAnimFrameIndex];
             data.currentFramepos = framesPosition[data.currentFrame];
 
             const durationPerFrame = 1 / data.currentAnim.speed;
@@ -76,6 +88,8 @@ export function makeAnimatedSprite(sprite, anims, framesPosition, frameSize, pos
                 data.animationTimer -= durationPerFrame;
             }
         },
-        draw() {}
+        draw() {
+            drawFrame(sprite, data.currentFramepos, frameSize, data.pos, scale);
+        }
     }
 }
