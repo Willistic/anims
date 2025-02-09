@@ -76,7 +76,6 @@ export function makeAnimatedSprite(sprite, anims, framesPosition, frameSize, pos
                 data.currentFrame = data.currentAnim.frames[data.currentAnimFrameIndex];
             }
 
-            // data.currentFrame = data.currentAnim.frames[data.currentAnimFrameIndex];
             data.currentFramepos = framesPosition[data.currentFrame];
 
             const durationPerFrame = 1 / data.currentAnim.speed;
